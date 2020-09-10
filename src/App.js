@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from '@react-navigation/native';
 import { View, Text, Button } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -65,6 +65,12 @@ export default function App() {
   // }
 
   function Home({ navigation }) {
+    useEffect(() => {
+      console.log('Home mounted');
+      return () => {
+        console.log('Home unmounted');
+      }
+    });
     return (
       <View style={pageStyle}>
         <Button
@@ -82,6 +88,12 @@ export default function App() {
   }
 
   function Profile({ route, navigation }) {
+    useEffect(() => {
+      console.log('Profile mounted', route.params?.age);
+      return () => {
+        console.log('Profile unmounted', route.params?.age);
+      }
+    });
     return (
       <View style={pageStyle}>
         <Text>Hello {route.params?.id || "Unknown"}!</Text>
@@ -106,6 +118,11 @@ export default function App() {
         <Button
           title="Go back"
           onPress={() => navigation.goBack()}
+        />
+        <Button
+          title="Go to unknown profile"
+          // onPress={() => navigation.navigate("Profile", { id: "Wojciech123", age: 222 })}
+          onPress={() => navigation.setParams({ id: `${route.params?.id}1`, age: route.params?.age + 1 })}
         />
       </View>
     );
